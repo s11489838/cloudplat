@@ -1,0 +1,48 @@
+/*
+.container  {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+*/
+
+.container  {
+  display: flex;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.fix-container{
+	display: block;
+	position: relative;
+	width: 90%;
+}
+
+.container .row {
+  margin: 0 auto;
+}
+
+.center-btn { text-align: center }
+
+.col s12 valign{
+   html
+    font-size: 20px;
+}
+
+.card .card-title {
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.card .card-action {
+    position: relative;
+    background-color: inherit;
+    border-top: 1px solid rgba(160,160,160,0.2);
+    padding: 20px;
+    text-align: center;
+}

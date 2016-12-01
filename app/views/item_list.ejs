@@ -1,0 +1,59 @@
+<html>
+  <head> 
+    <title>CPJ | List</title>
+      <!--Import Google Icon Font-->
+      <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css"  media="screen,projection"/>
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+      <link type="text/css" rel="stylesheet" href="/layout.css" />
+    </head>
+  </head>
+  <body>
+<div class="container fix-container">
+<div class="row">
+  <div class="col s6  offset-s6">
+    <div class="card">
+      <div class="card-action pink lighten-1">
+        <span class="card-title blue-text">Restaurant</span>
+      </div>
+      <div class="card-content card-action"> 
+        User: <%= user %>
+        <br>
+        Number of Restaurant: <%= noDocs %>
+        <br>
+        criteria: <%= criteria %><br>
+        <p style="color:red"><%= msg%></p>
+      </div>
+      <div class="card-action">
+        <a href="/item/create">Create</a>
+      </div>
+      <% if(user == 'admin'){ %>
+        <div class="card-action">
+          <a href="/user/mgt">User Management</a>
+        </div>
+      <% } %>
+      <div class="card-action">
+        <a href="/user/logout">Logout</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="collection col s6 m4" style="padding: 0">
+    <% for(var i=0; i<restaurant.length; i++) {%>
+      <a href='/item/<%= restaurant[i].id %>' class="collection-item">
+        <span><%= i + 1 %>. </span><%= restaurant[i].name %>
+      </a>
+    <% } %>
+  </div>
+
+</div>
+</div>
+
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+  </body>
+</html>

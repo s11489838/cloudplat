@@ -1,0 +1,26 @@
+{
+  "name": "Project",
+  "description": "I am project",
+  "author": "no name",
+  "version": "0.0.1",
+  "dependencies": {
+    "body-parser": "*",
+    "mongoose": "*",
+    "express": "*",
+    "ejs": "*",
+    "express-fileupload": "*",
+    "cookie-session": "*",
+    "cfenv": "1.0.x",
+    "serve-favicon": "latest",
+    "method-override": "latest",
+    "express-session": "latest",
+    "connect-flash": "~0.1.1",
+    "passport": "~0.2.1",
+    "passport-local": "~1.0.0",
+    "mongoose-unique-validator":"latest"
+  },
+  "engine": "node >= 0.10.0",
+  "scripts": {
+    "start": "node server"
+  }
+}
