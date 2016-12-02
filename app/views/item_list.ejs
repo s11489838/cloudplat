@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>CPJ | List</title>
+    <title>Main Page</title>
     <!--Import Google Icon Font-->
     <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
@@ -51,6 +51,7 @@
                 <br>
                 criteria: <%= criteria %><br>
                 <p style="color:red"><%= msg %></p>
+                <p style="color:green"><%= (!!response) ? response : '' %></p>
             </div>
             <div class="card-action">
                 <a href="/item/create">Create</a>

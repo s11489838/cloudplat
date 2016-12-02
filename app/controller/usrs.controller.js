@@ -34,7 +34,7 @@ exports.Home = function (req, res) {
     res.redirect('/user/login');
 }
 
-exports.LoginGET =  function (req, res, next) {
+exports.LoginGET = function (req, res, next) {
     if (!req.user) {
         res.render('login', {
             messages: req.flash('error') || req.flash('info') || ''
@@ -67,6 +67,7 @@ exports.signupPOST = function (req, res) {
             }
             req.login(account, function (err) {
                 if (err) return next(err);
+                req.flash('info', 'Account Create Success! Welcome ' + req.user.username)
                 return res.redirect('/list');
             });
         });

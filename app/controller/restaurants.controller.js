@@ -27,7 +27,8 @@ exports.listLocation = function (req, res) {
             criteria: req.body.search_criteria,
             noDocs: value.length || 0,
             user: req.user.username,
-            msg: req.flash('error') || req.flash('info')
+            msg: req.flash('error') || req.flash('info'),
+            response: req.flash('info')
         });
     });
 
@@ -50,7 +51,8 @@ exports.itemDetail = function (req, res) {
             info: value,
             imgSrc: imgSrc,
             api: credentials,
-            messages: req.flash('error') || req.flash('info')
+            messages: req.flash('error') || req.flash('info'),
+            response: req.flash('info') || ' '
         });
     });
 }
@@ -90,9 +92,11 @@ exports.itemAction = function (req, res) {
     }
     restaurantsDBHelper.Update(req.params.id, req.user.username, passJson, req.params.action, function (value) {
         if (value == false) {
+
             req.flash('error', 'Update not success');
         } else {
-            req.flash('error', 'Document update Success!!!');
+            if(req.params.action == 'rate'){req.flash('info', 'Rating Submit Successfully');}
+            else{req.flash('info', 'Document update Success!!!');}
         }
         res.redirect('./')
     })
