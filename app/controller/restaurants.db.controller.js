@@ -29,8 +29,8 @@ module.exports = {
                         }
                     })
                     .exec(function (err, items) {
-                        console.log(JSON.stringify(items));
-                        if (items != null)
+                        console.log(items.length);
+                        if (items.length >= 1)
                             callback(true);
                         else
                             callback(false);

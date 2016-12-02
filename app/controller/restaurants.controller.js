@@ -17,14 +17,14 @@ exports.listLocation = function (req, res) {
                 query['by'] = new RegExp(req.body.search_criteria, "i");
                 break;
             case'cuisine':
-                query['cuisine'] = new RegExp(req.body.search_criteria,"i");
+                query['cuisine'] = new RegExp(req.body.search_criteria, "i");
                 break;
         }
     }
     restaurantsDBHelper.findAll(query, 'list', function (value) {
         res.render("item_list", {
             restaurant: value,
-            criteria: query,
+            criteria: req.body.search_criteria,
             noDocs: value.length || 0,
             user: req.user.username,
             msg: req.flash('error') || req.flash('info')
@@ -88,11 +88,11 @@ exports.itemAction = function (req, res) {
         }
 
     }
-    restaurantsDBHelper.Update(req.params.id, req.session.id, passJson, req.params.action, function (value) {
+    restaurantsDBHelper.Update(req.params.id, req.user.username, passJson, req.params.action, function (value) {
         if (value == false) {
-            req.flash('error', 'Update no success');
+            req.flash('error', 'Update not success');
         } else {
-            req.flash('info', 'Document update Success!!!');
+            req.flash('error', 'Document update Success!!!');
         }
         res.redirect('./')
     })
@@ -101,9 +101,8 @@ exports.itemRate = function (req, res) {
     var query = {};
     query['by'] = req.user.username;
     query['name'] = req.param('name');
-    console.log(JSON.stringify(query));
-    restaurantsDBHelper.findAll(query, 'review', function (items) {
-        if (items) {
+    restaurantsDBHelper.findAll(query, 'review', function (item) {
+        if (item != false) {
             req.flash('error', 'you cannot rate it twice.');
             return res.redirect('/item/' + req.param('id'));
         } else
@@ -115,6 +114,7 @@ exports.itemDelete = function (req, res) {
     restaurantsDBHelper.deleteOne(req.params.id, req.user.username, function (value) {
         if (value == false) {
             req.flash('error', 'You are not the owner, action denied.');
+            return res.redirect('/item/' + req.param('id'));
         } else {
             req.flash('info', 'Document delete Successful!!!');
         }
@@ -125,7 +125,7 @@ exports.itemEdit = function (req, res) {
     restaurantsDBHelper.grantEditDoc(req.params.id, req.user.username, function (value) {
         if (value == false) {
             req.flash('error', 'You are not the owner, action denied.');
-            return res.redirect('/list')
+            return res.redirect('/item/' + req.param('id'));
         } else {
             res.render("item_create", {
                 action: "Edit", orgJson: value,
