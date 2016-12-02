@@ -1,7 +1,4 @@
-# Cloud Project
-
-
-![m1](subnet-mask.mybluemix.net)
+# Cloud Project (http://subnet-mask.mybluemix.net)
 
 * Group:
   * Leung Chun Wa - 11489838
