@@ -46,3 +46,11 @@
     padding: 20px;
     text-align: center;
 }
+
+}
+
+.card .card-image {
+    position: relative;
+    min-width: 30%;
+}
+

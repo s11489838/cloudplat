@@ -1,43 +1,36 @@
 var restaurantsDBHelper = require('./restaurants.db.controller.js')
 var credentials = require('../../config/const/credentials');
-console.log(credentials.googleAPI);
-var getErrorMessage = function (err) {
-    // Define the error message variable
-    var message = '';
-    if (err.code) {
-        switch (err.code) {
-            case 11000:
-            case 11001:
-                message = 'Username already exists';
-                break;
-            default:
-                message = 'Something went wrong';
-        }
-    } else {
-        for (var errName in err.errors) {
-            if (err.errors[errName].message) message = err.errors[errName].message;
-        }
-    }
-    return message;
-};
+
 exports.Home = function (req, res) {
     res.redirect('/user');
 }
 exports.listLocation = function (req, res) {
     var query = {};
-    restaurantsDBHelper.getDocs(query, 'list', function (value) {
+    if (req.body.from == 'search') {
+        console.log(req.body.search_param);
+        console.log(req.body.search_criteria);
+        switch (req.body.search_param) {
+            case 'restaurant':
+                query['name'] = req.body.search_criteria;
+                break;
+            case 'location':
+                query['location'] = req.body.search_criteria;
+                break;
+            case'cuisine':
+                query['cuisine'] = req.body.search_criteria;
+                break;
+        }
+    }
+    restaurantsDBHelper.findAll(query, 'list', function (value) {
         res.render("item_list", {
             restaurant: value,
-            criteria: JSON.stringify(query),
-            noDocs: value.length,
+            criteria: query,
+            noDocs: value.length || 0,
             user: req.user.username,
             msg: req.flash('error') || req.flash('info')
         });
     });
 
-}
-exports.Response = function (req, res) {
-    res.render("resp", req.session['resp']);
 }
 exports.itemCreate = function (req, res) {
     res.render("item_create", {
@@ -47,13 +40,18 @@ exports.itemCreate = function (req, res) {
     });
 }
 exports.itemDetail = function (req, res) {
-    restaurantsDBHelper.getDoc(req.params.id, 'read', function (value) {
+    restaurantsDBHelper.find(req.param('id'), 'read', function (value) {
         var imgSrc = "";
         if (value.img.data != null) {
             imgSrc = 'data:' + value.img.contentType + ';base64,';
             imgSrc += new Buffer(value.img.data, 'base64');
         }
-        res.render("item", {info: value, imgSrc: imgSrc, api: credentials});
+        res.render("item", {
+            info: value,
+            imgSrc: imgSrc,
+            api: credentials,
+            messages: req.flash('error') || req.flash('info')
+        });
     });
 }
 exports.itemAction = function (req, res) {
@@ -90,21 +88,31 @@ exports.itemAction = function (req, res) {
         }
 
     }
-    restaurantsDBHelper.updateDoc(req.params.id, req.session.id, passJson, req.params.action, function (value) {
+    restaurantsDBHelper.Update(req.params.id, req.session.id, passJson, req.params.action, function (value) {
         if (value == false) {
             req.flash('error', 'Update no success');
         } else {
             req.flash('info', 'Document update Success!!!');
         }
-        res.redirect('/list')
+        res.redirect('./')
     })
 }
 exports.itemRate = function (req, res) {
-    res.render("item_rate", {name: req.params.name});
-}
+    var query = {};
+    query['by'] = req.user.username;
+    query['name'] = req.param('name');
+    console.log(JSON.stringify(query));
+    restaurantsDBHelper.findAll(query, 'review', function (items) {
+        if (items) {
+            req.flash('error', 'you cannot rate it twice.');
+            return res.redirect('/item/' + req.param('id'));
+        } else
+            return res.render("item_rate", {name: query.name});
+    });
+};
 
 exports.itemDelete = function (req, res) {
-    restaurantsDBHelper.delDoc(req.params.id, req.user.username, function (value) {
+    restaurantsDBHelper.deleteOne(req.params.id, req.user.username, function (value) {
         if (value == false) {
             req.flash('error', 'You are not the owner, action denied.');
         } else {
@@ -112,9 +120,9 @@ exports.itemDelete = function (req, res) {
         }
         return res.redirect('/list')
     })
-}
+};
 exports.itemEdit = function (req, res) {
-    restaurantsDBHelper.grantEditDoc(req.params.id,req.user.username, function (value) {
+    restaurantsDBHelper.grantEditDoc(req.params.id, req.user.username, function (value) {
         if (value == false) {
             req.flash('error', 'You are not the owner, action denied.');
             return res.redirect('/list')

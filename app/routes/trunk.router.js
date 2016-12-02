@@ -1,12 +1,24 @@
 var restaurantController = require('../controller/restaurants.controller.js');
 var passport = require('passport');
 
+/**
+ *  listLocation => main page listing location
+ *  Response => response page
+ *  itemCreate => create item page
+ *  itemDetail => load item detail
+ *  itemRate => rating
+ *      input : username, id
+ *
+ *  itemAction =>
+ *  itemDelete =>
+ *  itemEdit =>
+ **/
+
 module.exports = function (app) {
     app.get('/', restaurantController.Home);
 
-    app.get('/list', isAuthenticated, restaurantController.listLocation);
-
-    app.get('/resp', isAuthenticated, restaurantController.Response);
+    app.post('/list', isAuthenticated, restaurantController.listLocation)
+        .get('/list', isAuthenticated, restaurantController.listLocation);
 
     app.get('/item/create', isAuthenticated, restaurantController.itemCreate);
 

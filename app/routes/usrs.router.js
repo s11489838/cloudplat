@@ -17,6 +17,7 @@ module.exports = function (app, router) {
         .put(function (req, res) {
             res.redirect('/user/signup')
         });
+
     router.route('/signup')
         .get(users.signup)
         .post(users.signupPOST);

@@ -57,7 +57,7 @@ exports.Create = function (req, res) {
             }
         }
 
-        users.saveDocs(newJson, function (value,err) {
+        users.Create(newJson, function (value, err) {
             if (err) {
                 var message = getErrorMessage(err);
                 req.flash('error', message);
@@ -74,7 +74,7 @@ exports.Create = function (req, res) {
             return res.redirect('../list')
         })
     } else {
-        users.saveDocs(newJson, function (value) {
+        users.Create(newJson, function (value) {
             if (value == false) {
                 resJson["status"] = "failed";
             } else {
@@ -86,7 +86,7 @@ exports.Create = function (req, res) {
     }
 }
 exports.Query = function (req, res) {
-    users.getDocs({}, 'api', function (value) {
+    users.findAll({}, 'api', function (value) {
         res.json(value);
     });
 }
@@ -109,7 +109,7 @@ exports.QueryItems = function (req, res) {
     } else {
         return res.json({})
     }
-    users.getDocs(resJson, 'api', function (value) {
+    users.findAll(resJson, 'api', function (value) {
         res.json(value);
     });
 }

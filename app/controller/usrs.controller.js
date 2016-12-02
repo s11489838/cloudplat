@@ -1,5 +1,13 @@
 'use strict';
 
+/**
+ * HOME => redirect /user to /user/login
+ * LoginGet => load login page
+ * signup => load signup page
+ * signupPOST => submit signup and login
+ * Logout =>
+ **/
+
 var users = require('mongoose').model('users');
 
 var getErrorMessage = function (err) {
