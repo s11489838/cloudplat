@@ -11,13 +11,13 @@ exports.listLocation = function (req, res) {
         console.log(req.body.search_criteria);
         switch (req.body.search_param) {
             case 'restaurant':
-                query['name'] = req.body.search_criteria;
+                query['name'] = new RegExp(req.body.search_criteria, "i");
                 break;
-            case 'location':
-                query['location'] = req.body.search_criteria;
+            case 'user':
+                query['by'] = new RegExp(req.body.search_criteria, "i");
                 break;
             case'cuisine':
-                query['cuisine'] = req.body.search_criteria;
+                query['cuisine'] = new RegExp(req.body.search_criteria,"i");
                 break;
         }
     }
