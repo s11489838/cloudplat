@@ -7,19 +7,37 @@ module.exports = {
         console.log('Action : ' + from)
         switch (from) {
             case 'api':
-                projection = '-img.data';
-                restaurant.select(projection)
-                    .find(query)
+                restaurant.find(query).select({
+                    _id: 0,
+                    name: 1,
+                    borough: 1,
+                    cuisine: 1
+                })
                     .exec(function (err, item) {
-                        callback(item);
+                        if (err) console.dir(err);
+                        restaurant.aggregate([{
+                            $project: {
+                                _id: 0,
+                                restaurant: "$name",
+                                borough: 1,
+                                cuisine: 1
+                            }
+                        }]).exec(function (err, doc) {
+                            if (err) console.dir(err);
+                            callback(item);
+                        });
                     });
                 break;
-            case 'list':
+            case
+            'list'
+            :
                 restaurant.find(query).exec(function (err, item) {
                     callback(item);
                 });
                 break;
-            case 'review':
+            case
+            'review'
+            :
                 projection = {_id: 1, name: 1, rating: 1};
                 restaurant.aggregate({$unwind: '$rating'},
                     {
@@ -37,14 +55,16 @@ module.exports = {
                     });
                 break;
         }
-    },
+    }
+    ,
     find: function (id, action, callback) {
         var projection = '';
         restaurant.findById(id).select(projection).exec()
             .then(function (item) {
                 callback(item)
             });
-    },
+    }
+    ,
     grantEditDoc: function (id, user, callback) {
         var projection = '-img.data'
         restaurant.findById(id).select(projection).exec()
@@ -55,7 +75,8 @@ module.exports = {
                     callback(false);
                 }
             });
-    },
+    }
+    ,
     deleteOne: function (id, user, callback) {
         restaurant.findById(id).exec()
             .then(function (item) {
@@ -66,7 +87,8 @@ module.exports = {
                     callback(false);
                 }
             });
-    },
+    }
+    ,
     Create: function (newJson, callback) {
         var newRest = new restaurant(newJson)
         newRest.save(function (err, item) {
@@ -77,7 +99,8 @@ module.exports = {
                 return callback(item.username);
             }
         });
-    },
+    }
+    ,
     Update: function (id, user, newJson, action, callback) {
         console.log(id, newJson, action, user)
         restaurant.findById(id).exec()
@@ -96,5 +119,4 @@ module.exports = {
                 return callback(item)
             });
     }
-
 }
