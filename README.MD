@@ -1,4 +1,4 @@
-# Cloud Project (http://subnet-mask.mybluemix.net)
+# Cloud Project (http://www.yuyuyu.me)
 
 * Group:
   * Leung Chun Wa - 11489838
