@@ -3,7 +3,7 @@ applications:
   memory: 256M
   instances: 1
   domain: mybluemix.net
-  name: subnet-mask
+  name: wildcard-mask
   host: benorange
   disk_quota: 1024M
   services:

@@ -8,5 +8,4 @@ module.exports = function (app,router) {
 
 	router.get('/read', apis.Query);
 
-	router.get('/read/*', apis.QueryItems);
-};
+	router.get('/read/*', apis.QueryItems);}

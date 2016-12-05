@@ -9,7 +9,6 @@ var express = require('express'),
     session = require('express-session'),
     flash = require('connect-flash'),
     passport = require('passport');
-
 var credentials = require('./const/credentials');
 
 module.exports = function () {

@@ -56,7 +56,6 @@ exports.Create = function (req, res) {
                 filename: req.files.imgFile.name
             }
         }
-
         users.Create(newJson, function (value, err) {
             if (err) {
                 var message = getErrorMessage(err);
@@ -74,7 +73,10 @@ exports.Create = function (req, res) {
             return res.redirect('../list')
         })
     } else {
-        users.Create(newJson, function (value) {
+        var url = require('url');
+        var url_parts = url.parse(req.url, true);
+        var query = url_parts.query;
+        users.Create(query, function (value) {
             if (value == false) {
                 resJson["status"] = "failed";
             } else {
