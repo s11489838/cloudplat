@@ -1,4 +1,4 @@
-# Cloud Project (http://www.yuyuyu.me / https://waildcard-mask.mybluemix.net)
+# Cloud Project (http://www.yuyuyu.me / https://wildcard-mask.mybluemix.net)
 
 * Group:
   * Leung Chun Wa - 11489838
